@@ -1,10 +1,35 @@
 package algo.expert.graph;
 
+import java.util.*;
+
 public class YoungestCommonAncestor {
-	public static AncestralTree getYoungestCommonAncestor(AncestralTree topAncestor, AncestralTree descendantOne,
-			AncestralTree descendantTwo) {
-		// Write your code here.
-		return topAncestor; // Replace this line
+	public static LinkedList<AncestralTree> buildAncestralList(AncestralTree startNode) {
+		LinkedList<AncestralTree> ancestorList = new LinkedList<>();
+		AncestralTree current = startNode;
+		
+		while (current != null) {
+			ancestorList.add(current);
+			current = current.ancestor;
+		}
+		
+		return ancestorList;
+	}
+	
+	public static AncestralTree getYoungestCommonAncestor(AncestralTree topAncestor,
+														  AncestralTree descendantOne,
+														  AncestralTree descendantTwo) {
+		LinkedList<AncestralTree> ancestorsOne = buildAncestralList(descendantOne);
+		LinkedList<AncestralTree> ancestorsTwo = buildAncestralList(descendantTwo);
+		
+		for (AncestralTree iterOne: ancestorsOne) {
+			for (AncestralTree iterTwo: ancestorsTwo) { 
+				if (iterOne == iterTwo) {
+					return iterOne;
+				}
+			}
+		}
+		
+		return topAncestor;
 	}
 
 	static class AncestralTree {
